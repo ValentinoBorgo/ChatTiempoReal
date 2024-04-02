@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Usuario;
 
  
@@ -13,9 +14,9 @@ use App\Entity\Usuario;
 Class LoginController extends AbstractController {
 
     /**
-     *  @Route("/", name="login")
+     *  @Route("/", name="index")
      */
-    public function index(ManagerRegistry $doctrine) : Response {
+    public function index(ManagerRegistry $doctrine, Request $request) : Response {
 
         try{
 
@@ -26,7 +27,11 @@ Class LoginController extends AbstractController {
             echo "ERROR " . $e; 
         }
 
-        return $this->render('login/login.html.twig',[
+        // if ($request->isMethod('POST')) {
+        //     return $this->redirectToRoute('chat_route');
+        // }
+
+        return $this->render('login/principal.html.twig',[
             'prueba' => $usuarios
         ]);
     }

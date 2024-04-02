@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<div>
+<pre>
+    {{ dump(prueba) }}
+</pre>
+</div>
+
+<form action="">
+
+<div>
+<label for="user">Nombre</label>
+</div>
+<input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre">
+
+
+<div>
+<label for="user">Mensaje</label>
+</div>
+<input type="text" name="msgSend" id="msgSend" placeholder="Ingrese el mensaje">
+
+<input type="button" onclick="sendForm()" id="send" value="Enviar">
+
+</form>
+
+<span id="msg"></span>
+
+<script>
+
+    const msgI = document.getElementById("msg");
+
+    const nombre = document.getElementById("nombre");
+
+    const ws = new WebSocket('ws://localhost:8080');
+
+//Abre la conexcion del webSocket
+    ws.onopen = (e) => {
+        console.log("Conectado");
+    }
+
+    //Recibe el mensaje del wb
+    ws.onmessage = (msg) => {
+
+        let res = JSON.parse(msg.data);
+
+        //msgI.append(`${res.msgSend} <br>`);
+
+        msgI.insertAdjacentHTML('beforeend', `${res.user} : ${res.mensaje} <br>`);
+
+    }
+
+    const sendForm = () =>{
+        let msgSend = document.getElementById("msgSend");
+
+        let datos = {
+            mensaje : msgSend.value,
+            user : nombre.value
+        }
+
+        ws.send(JSON.stringify(datos));
+
+        msgI.insertAdjacentHTML('beforeend', `${datos.user} : ${datos.mensaje} <br>`);
+
+        msgSend.value = "";
+
+
+
+    }
+
+</script>
+
+
+{% endblock %}

@@ -1,3 +1,7 @@
 index:
     path: /
     controller: App\Controller\LoginController::index
+
+# chat_route:
+#     path: /chat
+#     controller: App\Controller\ChatController::moveToChat
